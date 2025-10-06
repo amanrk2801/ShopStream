@@ -37,8 +37,8 @@ docker-compose up --build
 docker-compose up -d postgres
 
 # 2. Start Backend (new terminal)
-cd backend/ShopStream.Api
-dotnet run
+cd backend
+dotnet run --project ShopStream.Api
 
 # 3. Start Frontend (new terminal)
 cd frontend
@@ -61,6 +61,7 @@ Password: Password123!
 Email: admin@shopstream.com
 Password: Password123!
 ```
+
 
 ## 📂 Project Structure
 
@@ -171,8 +172,8 @@ ShopStream/
 | Service  | URL                           | Description       |
 | -------- | ----------------------------- | ----------------- |
 | Frontend | http://localhost:3000         | React application |
-| API      | http://localhost:5000         | REST API          |
-| Swagger  | http://localhost:5000/swagger | API documentation |
+| API      | http://localhost:5240         | REST API          |
+| Swagger  | http://localhost:5240/swagger | API documentation |
 | Database | localhost:5432                | PostgreSQL        |
 
 ## 📖 API Endpoints
@@ -184,9 +185,12 @@ ShopStream/
 
 ### Products
 
-- `GET /api/products` - Get all products
+- `GET /api/products` - Get all products (paginated)
 - `GET /api/products/{id}` - Get product by ID
 - `GET /api/products/search` - Search products
+- `POST /api/products` - Create product (Admin)
+- `PUT /api/products/{id}` - Update product (Admin)
+- `DELETE /api/products/{id}` - Delete product (Admin)
 
 ### Cart
 
@@ -194,183 +198,22 @@ ShopStream/
 - `POST /api/cart/items` - Add item to cart
 - `PUT /api/cart/items/{id}` - Update cart item
 - `DELETE /api/cart/items/{id}` - Remove item
+- `DELETE /api/cart` - Clear cart
 
 ### Orders
 
 - `GET /api/orders` - Get user's orders
-- `POST /api/orders` - Create order (checkout)
-- `GET /api/orders/{id}` - Get order details
+- `GET /api/orders/{id}` - Get order by ID
+- `POST /api/orders` - Create order
+- `GET /api/orders/admin` - Get all orders (Admin)
+- `PUT /api/orders/{id}/status` - Update status (Admin)
 
-## 🧪 Testing
+### Addresses
 
-### Run Complete System Test
-
-```powershell
-powershell -File scripts/test-everything.ps1
-```
-
-### Run Diagnostics
-
-```powershell
-powershell -File scripts/diagnose.ps1
-```
-
-### Test Cart API
-
-```powershell
-powershell -File scripts/test-cart-api.ps1
-```
-
-## 🔧 Configuration
-
-### Environment Variables (.env)
-
-```env
-# Database
-POSTGRES_DB=shopstream
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-
-# JWT
-JWT_KEY=YourSecretKeyHere
-JWT_ISSUER=ShopStreamAPI
-JWT_AUDIENCE=ShopStreamClient
-```
-
-### Backend Configuration (appsettings.json)
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=shopstream;Username=postgres;Password=postgres"
-  },
-  "Jwt": {
-    "Key": "ShopStreamSecretKeyForJWTTokenGeneration2024!",
-    "Issuer": "ShopStreamAPI",
-    "Audience": "ShopStreamClient"
-  }
-}
-```
-
-## 🚢 Deployment
-
-### Docker Production
-
-```bash
-docker-compose up -d --build
-```
-
-### Manual Deployment
-
-**Backend:**
-
-```bash
-cd backend/ShopStream.Api
-dotnet publish -c Release -o ./publish
-```
-
-**Frontend:**
-
-```bash
-cd frontend
-npm run build
-# Output in dist/ folder
-```
-
-## 🐛 Troubleshooting
-
-### Issue: "Failed to add to cart"
-
-```bash
-# Run diagnostics
-powershell -File scripts/diagnose.ps1
-
-# Restart services
-docker-compose restart
-```
-
-### Issue: "An error occurred while saving entity changes"
-
-This happens when creating an order without a shipping address.
-
-**Fix:**
-
-```bash
-# Add addresses for all users
-powershell -File scripts/fix-addresses.ps1
-```
-
-### Issue: Database connection failed
-
-```bash
-# Check PostgreSQL
-docker ps | findstr postgres
-
-# Start PostgreSQL
-docker-compose up -d postgres
-```
-
-### Issue: Login failed
-
-```bash
-# Register new user through frontend
-# Or use demo accounts above
-```
-
-## 📊 Performance
-
-- **First Load**: ~2s
-- **Login**: ~150ms
-- **Add to Cart**: ~70ms
-- **API Response**: <100ms
-
-## 🌍 Browser Support
-
-- ✅ Chrome 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Edge 90+
-
-## 📱 Mobile Support
-
-Fully responsive design tested on:
-
-- Desktop (1920x1080+)
-- Laptop (1366x768+)
-- Tablet (768x1024)
-- Mobile (375x667+)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
-
-## 🎯 Roadmap
-
-- [ ] Payment gateway integration (Stripe/PayPal)
-- [ ] Email notifications
-- [ ] Product reviews and ratings
-- [ ] Wishlist functionality
-- [ ] Advanced search filters
-- [ ] Multi-language support
-- [ ] Dark mode
-
-## 📧 Support
-
-For support, open an issue in the repository.
-
----
-
-**Built with ❤️ using .NET 9 and React 18**
-
-**Happy Shopping!** 🛒✨
+- `GET /api/addresses` - Get user's addresses
+- `POST /api/addresses` - Add new address
+- `PUT /api/addresses/{id}` - Update address
+- `DELETE /api/addresses/{id}` - Delete address
 
 
 ## 🏗️ Architecture
@@ -424,6 +267,7 @@ For support, open an issue in the repository.
 ## 🎨 UI Design
 
 ### Color Scheme (Amazon-Inspired)
+
 ```css
 --primary: #ff9900;      /* Amazon Orange */
 --secondary: #565959;    /* Dark Gray */
@@ -435,6 +279,7 @@ For support, open an issue in the repository.
 ```
 
 ### Design Principles
+
 - **Clean & Minimal** - Focus on products, not decoration
 - **Consistent** - Same patterns throughout
 - **Accessible** - WCAG 2.1 AA compliant
@@ -442,6 +287,7 @@ For support, open an issue in the repository.
 - **Fast** - Optimized images and lazy loading
 
 ### Responsive Breakpoints
+
 - **Mobile**: < 768px
 - **Tablet**: 768px - 1024px
 - **Desktop**: > 1024px
@@ -449,17 +295,20 @@ For support, open an issue in the repository.
 ## 🔐 Security Features
 
 ### Authentication
+
 - **JWT Tokens** - Secure, stateless authentication
 - **BCrypt Hashing** - Industry-standard password hashing (work factor: 12)
 - **Token Expiration** - Configurable token lifetime
 - **Refresh Tokens** - (Coming soon)
 
 ### Authorization
+
 - **Role-Based Access** - Admin and Customer roles
 - **Protected Routes** - Frontend route guards
 - **API Authorization** - `[Authorize]` attributes on endpoints
 
 ### Data Protection
+
 - **Input Validation** - All inputs validated
 - **SQL Injection Prevention** - Parameterized queries via EF Core
 - **XSS Protection** - React's built-in escaping
@@ -529,6 +378,7 @@ For support, open an issue in the repository.
 ## 🔄 State Management
 
 ### Auth Store (Zustand)
+
 ```typescript
 interface AuthState {
   token: string | null
@@ -538,11 +388,13 @@ interface AuthState {
   logout: () => void
 }
 ```
+
 - Persisted to localStorage
 - Auto-rehydrates on page load
 - Token attached to all API requests
 
 ### Cart Store (Zustand)
+
 ```typescript
 interface CartState {
   items: CartItem[]
@@ -552,6 +404,7 @@ interface CartState {
   clearCart: () => void
 }
 ```
+
 - Synced with backend
 - Persisted to localStorage
 - Real-time updates
@@ -559,15 +412,18 @@ interface CartState {
 ## 🌐 API Documentation
 
 ### Base URL
-- Development: `http://localhost:5000/api`
+
+- Development: `http://localhost:5240/api`
 - Production: `https://your-domain.com/api`
 
 ### Authentication Header
+
 ```
 Authorization: Bearer <jwt_token>
 ```
 
 ### Response Format
+
 ```json
 {
   "success": true,
@@ -577,6 +433,7 @@ Authorization: Bearer <jwt_token>
 ```
 
 ### Error Format
+
 ```json
 {
   "success": false,
@@ -588,9 +445,11 @@ Authorization: Bearer <jwt_token>
 ## 🧪 Testing Scripts
 
 ### Complete System Test
+
 ```powershell
 powershell -File scripts/test-everything.ps1
 ```
+
 Tests:
 - ✅ API health check
 - ✅ User authentication
@@ -601,9 +460,11 @@ Tests:
 - ✅ Database connectivity
 
 ### Diagnostics
+
 ```powershell
 powershell -File scripts/diagnose.ps1
 ```
+
 Checks:
 - Docker status
 - PostgreSQL connection
@@ -612,18 +473,22 @@ Checks:
 - Port availability
 
 ### Cart API Test
+
 ```powershell
 powershell -File scripts/test-cart-api.ps1
 ```
+
 Tests:
 - Add to cart
 - Update quantity
 - Remove item
 - Clear cart
 
+
 ## 🚀 Development Workflow
 
 ### 1. Setup
+
 ```bash
 # Clone repository
 git clone <repo-url>
@@ -634,6 +499,7 @@ docker-compose up -d
 ```
 
 ### 2. Backend Development
+
 ```bash
 cd backend
 
@@ -652,6 +518,7 @@ dotnet run
 ```
 
 ### 3. Frontend Development
+
 ```bash
 cd frontend
 
@@ -666,6 +533,7 @@ npm run build
 ```
 
 ### 4. Testing
+
 ```bash
 # Backend tests
 cd backend
@@ -700,6 +568,7 @@ docker-compose down -v
 ### Manual Deployment
 
 **Backend:**
+
 ```bash
 cd backend/ShopStream.Api
 
@@ -712,6 +581,7 @@ dotnet ShopStream.Api.dll
 ```
 
 **Frontend:**
+
 ```bash
 cd frontend
 
@@ -725,6 +595,7 @@ npm run build
 ### Environment Variables
 
 **Production .env:**
+
 ```env
 # Database
 POSTGRES_DB=shopstream_prod
@@ -738,13 +609,63 @@ JWT_AUDIENCE=ShopStreamClient
 
 # API
 ASPNETCORE_ENVIRONMENT=Production
-ASPNETCORE_URLS=http://+:5000
+ASPNETCORE_URLS=http://+:5240
+```
+
+## 🔧 Configuration
+
+### Environment Variables (.env)
+
+```env
+# Database
+POSTGRES_DB=shopstream
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+# JWT
+JWT_KEY=YourSecretKeyHere
+JWT_ISSUER=ShopStreamAPI
+JWT_AUDIENCE=ShopStreamClient
+```
+
+### Backend Configuration (appsettings.json)
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=shopstream;Username=postgres;Password=postgres"
+  },
+  "Jwt": {
+    "Key": "ShopStreamSecretKeyForJWTTokenGeneration2024!",
+    "Issuer": "ShopStreamAPI",
+    "Audience": "ShopStreamClient"
+  }
+}
+```
+
+### Frontend Configuration (vite.config.ts)
+
+```typescript
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5240',
+        changeOrigin: true,
+      }
+    }
+  }
+})
 ```
 
 ## 🐛 Common Issues & Solutions
 
 ### Issue: "Failed to connect to database"
+
 **Solution:**
+
 ```bash
 # Check PostgreSQL is running
 docker ps | findstr postgres
@@ -756,25 +677,30 @@ docker-compose restart postgres
 ```
 
 ### Issue: "JWT token invalid"
+
 **Solution:**
 - Check JWT_KEY matches in backend and .env
 - Verify token hasn't expired
 - Clear localStorage and login again
 
 ### Issue: "CORS error"
+
 **Solution:**
 - Verify frontend URL in backend CORS policy
 - Check API proxy in vite.config.ts
-- Ensure backend is running on correct port
+- Ensure backend is running on correct port (5240)
 
 ### Issue: "Cart not persisting"
+
 **Solution:**
 - Check localStorage is enabled
 - Verify API endpoints are working
 - Clear browser cache and localStorage
 
 ### Issue: "Migration failed"
+
 **Solution:**
+
 ```bash
 # Drop database
 dotnet ef database drop --force --project ShopStream.Data --startup-project ShopStream.Api
@@ -783,55 +709,117 @@ dotnet ef database drop --force --project ShopStream.Data --startup-project Shop
 dotnet ef database update --project ShopStream.Data --startup-project ShopStream.Api
 ```
 
+### Issue: "Port already in use"
+
+**Solution:**
+
+```bash
+# Find process using port
+netstat -ano | findstr :5240
+netstat -ano | findstr :3000
+
+# Kill process
+taskkill /F /PID <process_id>
+```
+
 ## 📈 Performance Optimization
 
 ### Backend
+
 - **Database Indexing** - Indexes on frequently queried columns
 - **Async/Await** - All I/O operations are async
 - **Caching** - (Coming soon) Redis for session/cart caching
 - **Connection Pooling** - EF Core connection pooling enabled
 
 ### Frontend
+
 - **Code Splitting** - React.lazy for route-based splitting
 - **Image Optimization** - Lazy loading and responsive images
 - **Bundle Size** - Vite tree-shaking and minification
 - **State Persistence** - LocalStorage for offline capability
 
 ### Metrics
+
 - **API Response Time**: < 100ms average
 - **Page Load Time**: < 2s first load
 - **Time to Interactive**: < 3s
 - **Lighthouse Score**: 90+ (Performance)
 
+## 📊 Performance
+
+- **First Load**: ~2s
+- **Login**: ~150ms
+- **Add to Cart**: ~70ms
+- **API Response**: <100ms
+
+## 🌍 Browser Support
+
+- ✅ Chrome 90+
+- ✅ Firefox 88+
+- ✅ Safari 14+
+- ✅ Edge 90+
+
+## 📱 Mobile Support
+
+Fully responsive design tested on:
+
+- Desktop (1920x1080+)
+- Laptop (1366x768+)
+- Tablet (768x1024)
+- Mobile (375x667+)
+
 ## 🔮 Future Enhancements
 
 ### Phase 1 (Q1 2025)
+
 - [ ] Payment gateway integration (Stripe/Razorpay)
 - [ ] Email notifications (order confirmation, shipping)
 - [ ] Product reviews and ratings
 - [ ] Wishlist functionality
 
 ### Phase 2 (Q2 2025)
+
 - [ ] Advanced search with filters
 - [ ] Product recommendations
 - [ ] Multi-language support (i18n)
 - [ ] Dark mode
 
 ### Phase 3 (Q3 2025)
+
 - [ ] Mobile app (React Native)
 - [ ] Real-time order tracking
 - [ ] Chat support
 - [ ] Analytics dashboard
 
 ### Phase 4 (Q4 2025)
+
 - [ ] Multi-vendor marketplace
 - [ ] Subscription products
 - [ ] Loyalty program
 - [ ] AI-powered recommendations
 
+## 🎯 Roadmap
+
+- [ ] Payment gateway integration (Stripe/PayPal)
+- [ ] Email notifications
+- [ ] Product reviews and ratings
+- [ ] Wishlist functionality
+- [ ] Advanced search filters
+- [ ] Multi-language support
+- [ ] Dark mode
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [ASP.NET Core Docs](https://docs.microsoft.com/aspnet/core)
 - [Entity Framework Core](https://docs.microsoft.com/ef/core)
 - [React Documentation](https://react.dev/)
@@ -839,6 +827,7 @@ dotnet ef database update --project ShopStream.Data --startup-project ShopStream
 - [Vite Guide](https://vitejs.dev/guide/)
 
 ### Tutorials
+
 - [Clean Architecture in .NET](https://docs.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures)
 - [React Best Practices](https://react.dev/learn)
 - [PostgreSQL Tutorial](https://www.postgresql.org/docs/current/tutorial.html)
@@ -847,14 +836,18 @@ dotnet ef database update --project ShopStream.Data --startup-project ShopStream
 
 Built with ❤️ by developers who love clean code and great UX.
 
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 📧 Support
+
+For support, open an issue in the repository.
+
 ---
+
+**Built with ❤️ using .NET 9 and React 18**
 
 **Happy Shopping!** 🛒✨
 
 **Questions?** Open an issue or reach out to the team.
-#   S h o p S t r e a m  
- 
