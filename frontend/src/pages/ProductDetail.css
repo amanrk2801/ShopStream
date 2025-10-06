@@ -1,0 +1,153 @@
+.product-detail {
+  padding: 1.5rem 0;
+  background: var(--light);
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.product-images img {
+  width: 100%;
+  max-width: 500px;
+  object-fit: contain;
+}
+
+.image-placeholder {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--light);
+  border-radius: 8px;
+  font-size: 8rem;
+  opacity: 0.2;
+}
+
+.product-details h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.product-category {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-price {
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--danger);
+  margin: 1rem 0;
+}
+
+.product-stock {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background: var(--light);
+  border-radius: 4px;
+}
+
+.in-stock {
+  color: var(--success);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.out-of-stock {
+  color: var(--danger);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.product-description {
+  color: var(--secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 14px;
+}
+
+.product-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  padding: 1.5rem;
+  background: var(--light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.quantity-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quantity-selector label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.quantity-selector input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.btn-lg {
+  padding: 0.75rem 2rem;
+  font-size: 14px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .product-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .product-images {
+    padding: 1rem;
+  }
+  
+  .product-details h1 {
+    font-size: 1.25rem;
+  }
+  
+  .product-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .quantity-selector input {
+    width: 100%;
+  }
+}

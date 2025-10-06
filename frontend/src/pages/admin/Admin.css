@@ -1,0 +1,98 @@
+.admin-page {
+  padding: 2rem 0;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.admin-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.admin-card:hover {
+  transform: translateY(-4px);
+}
+
+.admin-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.admin-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-card p {
+  color: var(--secondary);
+}
+
+.admin-table {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.admin-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: var(--light);
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.admin-table td {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status.active {
+  background: #d1fae5;
+  color: var(--success);
+}
+
+.status.inactive {
+  background: #fee;
+  color: var(--danger);
+}
+
+.btn-small {
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-small:hover {
+  background: var(--primary-dark);
+}

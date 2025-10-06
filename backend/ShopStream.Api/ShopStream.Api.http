@@ -1,0 +1,6 @@
+@ShopStream.Api_HostAddress = http://localhost:5240
+
+GET {{ShopStream.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
